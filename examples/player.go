@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/ziutek/gtk"
+
 	"github.com/ziutek/gst"
+	"github.com/ziutek/gtk"
 )
 
 type Player struct {
@@ -120,7 +121,6 @@ func NewPlayer() *Player {
 func (p *Player) Run() {
 	gtk.Main()
 }
-
 
 func main() {
 	NewPlayer().Run()

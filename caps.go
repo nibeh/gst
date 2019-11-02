@@ -12,10 +12,13 @@ import "C"
 
 import (
 	"unsafe"
+
 	"github.com/ziutek/glib"
 )
 
 type Caps C.GstCaps
+
+type Structure C.GstStructure
 
 func (c *Caps) g() *C.GstCaps {
 	return (*C.GstCaps)(c)
@@ -39,6 +42,10 @@ func (c *Caps) AppendStructure(media_type string, fields glib.Params) {
 
 func (c *Caps) GetSize() int {
 	return int(C.gst_caps_get_size(c.g()))
+}
+
+func (c *Caps) GetStructure(v uint) *Structure {
+	return (*Structure)(C.gst_caps_get_structure(c.g(), C.uint(v)))
 }
 
 func (c *Caps) String() string {
@@ -67,3 +74,26 @@ func CapsFromString(s string) *Caps {
 	return (*Caps)(C.gst_caps_from_string(cs))
 }
 
+func (s *Structure) g() *C.GstStructure {
+	return (*C.GstStructure)(s)
+}
+
+func (s *Structure) GetInt(field string) int {
+	cs := (*C.gchar)(C.CString(field))
+	defer C.free(unsafe.Pointer(cs))
+	var val C.int
+	C.gst_structure_get_int(s.g(), cs, &val)
+	return int(val)
+}
+
+func (s *Structure) GetString(field string) string {
+	cs := (*C.gchar)(C.CString(field))
+	defer C.free(unsafe.Pointer(cs))
+	rs := C.gst_structure_get_string(s.g(), cs)
+	return C.GoString(rs)
+}
+
+func (s *Structure) ToString() string {
+	rs := C.gst_structure_to_string(s.g())
+	return C.GoString(rs)
+}
