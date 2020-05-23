@@ -20,6 +20,12 @@ type Caps C.GstCaps
 
 type Structure C.GstStructure
 
+// func (c *Caps) SetOnElement(elem *Element) {
+// 	s := C.CString("caps")
+// 	defer C.free(unsafe.Pointer(s))
+// 	C.g_object_set_property(elem.GstObj.Object, (*C.gchar)(s), c.g())
+// }
+
 func (c *Caps) g() *C.GstCaps {
 	return (*C.GstCaps)(c)
 }

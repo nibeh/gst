@@ -12,6 +12,10 @@ void _golang_gst_set_pts( GstBuffer *buffer, guint64 value ) {
   GST_BUFFER_PTS(buffer) = value;
 }
 
+guint64 _golang_gst_get_duration(GstBuffer *buffer ) {
+  return GST_BUFFER_DURATION(buffer);
+}
+
 void _golang_gst_set_duration( GstBuffer *buffer, guint64 value ) {
   GST_BUFFER_DURATION(buffer) = value;
 }
@@ -80,6 +84,10 @@ func (b *Buffer) SetDTS(value uint64) {
 }
 
 // #define	GST_BUFFER_DTS_OR_PTS()
+
+func (b *Buffer) GetDuration() uint64 {
+	return (uint64)(C._golang_gst_get_duration((*C.GstBuffer)(b.GstBuffer)))
+}
 
 // SetDuration implements #define	GST_BUFFER_DURATION()
 func (b *Buffer) SetDuration(value uint64) {
